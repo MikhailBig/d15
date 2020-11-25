@@ -4,10 +4,15 @@ from data import coins
 from prompt_toolkit.shortcuts.utils import clear
 import re
 
+cash = 0
+end = False
+clear()
+
 
 def report():
     for n, v in resources.items():
         print(f"{n.capitalize()}: {v}")
+    print(f"Money: ${cash}")
 
 
 def stop_operate():
@@ -34,6 +39,8 @@ def make_drink(drink):
                 return print(f"*** Not enogh {ingredient}. Coins refunded")
         for ingredient, value in menu[drink]['ingredients'].items():
             resources[ingredient] = resources[ingredient] - value
+        global cash
+        cash += menu[drink]['cost']
         print(f"*** Making {drink}....will take a while....")
         return print(f"Here is your {drink}. With ${round(money_recieved-menu[drink]['cost'], 2)} change.")
 
@@ -62,8 +69,6 @@ operations = {
     'latte': make_drink,
     'cappuccino': make_drink,
 }
-end = False
-clear()
 
 while not end:
     start()
